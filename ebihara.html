@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ABOUT ME</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    body {
+      background: url('z.gif') center/cover no-repeat fixed;
+      color: #cfe8ff;
+      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    header {
+      background: #0f0f1a5d;
+      padding: 1.5rem;
+      border-bottom: 4px solid #6ab8ff;
+
+      /* layout changes: avatar left, text right */
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    /* avatar styling (moved out of inline HTML) */
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+
+      flex: 0 0 120px;
+      object-fit: cover;
+      display: block;
+    }
+
+    header h1 {
+      font-size: 22px;
+      color: #6ab8ff;
+      text-shadow: 2px 2px #0000002e;
+      margin-bottom: 6px;
+    }
+
+    header .header-text p {
+      margin: 0;
+      font-size: 12px;
+      color: #cfe8ff;
+    }
+
+    header .header-text .welcome-title {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #cfe8ff;
+    }
+
+    /* responsive: stack on small screens */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      .avatar { margin-bottom: 12px; }
+    }
+
+    nav {
+      margin-top: 1rem;
+    }
+
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      color: #6ab8ff;
+    }
+
+    section {
+      /* make sections span the same inner width as the header (body padding: 20px) */
+      width: calc(100% - 40px);
+      max-width: none;
+      margin: 2rem auto 0;
+      background: rgba(0, 0, 0, 0.56);
+      padding: 2rem;
+      border: 3px solid #ececec00;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #6ab8ff70;
+    }
+
+    /* ABOUT: keep the H2 on top, then a flex row with text left and a square image on the right */
+    #about {
+      display: block;
+    }
+
+    #about h2 {
+      margin-bottom: 1rem;
+    }
+
+    #about .about-inner {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+    }
+
+    #about .about-text {
+      flex: 1 1 0;
+      min-width: 0; /* allow text to shrink */
+      padding-right: 0.6rem; /* give text a little breathing room from the image */
+    }
+
+    /* make paragraph a bit larger and denser so it fills the box better */
+    #about .about-text p {
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+      color: #dbefff;
+      overflow-wrap: break-word;
+    }
+
+    /* slightly smaller square boxed picture on the right so text fits better */
+    #about .about-box {
+      width: 160px;
+      height: 160px;
+      flex: 0 0 160px;
+      border-radius: 8px;
+      border: none; /* removed colored border */
+      object-fit: cover;
+      image-rendering: pixelated;
+      background: #071022;
+      display: block;
+    }
+
+    /* stack on small screens */
+    @media (max-width: 720px) {
+      #about .about-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      #about .about-box { width: 140px; height: 140px; flex: 0 0 140px; margin-top: 1rem; }
+      #about .about-text p { font-size: 14px; } 
+    }
+
+    h2 {
+      color: #6ab8ff;
+      font-size: 18px;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px #000;
+    }
+
+    p {
+      font-size: 10px;
+      line-height: 1.8;
+    }
+
+    .quote {
+      border-left: 4px solid #6ab8ff;
+      padding-left: 10px;
+      margin: 1rem 0;
+      font-size: 11px;
+      font-style: italic;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 1rem;
+    }
+
+    .gallery-item {
+      background: #0f0f1a;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #6ab8ff;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    /* cover + play button (make square using aspect-ratio) */
+    .audio-cover {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1; /* forces a square box that matches the column width */
+      max-height: 320px;   /* optional cap so very wide screens don't make huge covers */
+      overflow: hidden;
+      border-radius: 8px;
+      background: #071022;
+      display: block;
+    }
+    .audio-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: pixelated;
+      display: block;
+    }
+    /* small screens: keep square but slightly smaller cap */
+    @media (max-width:420px) {
+      .audio-cover { max-height: 200px; }
+    }
+
+    .play-btn {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.95);
+      color: #000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .audio-meta { color: #dbefff; font-size: 12px; line-height:1.2; }
+    .audio-player { margin-top: 6px; }
+    .audio-player iframe { width: 100%; height: 80px; border: 0; }
+    /* small screens */
+    @media (max-width:420px) {
+      .audio-cover { height: 110px; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #0f0f1a;
+      color: #6ab8ff;
+      font-size: 12px;
+      border-top: 4px solid #6ab8ff;
+      margin-top: 2rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      margin: 10px 0;
+      padding: 10px 20px;
+      background: #6ab8ff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #4c9bd8;
+      border-color: white;
+    }
+
+    .about-text {
+      margin-bottom: 1rem;
+    }
+
+    .about-box {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-top: 1rem;
+      border: none; /* removed colored border */
+      box-shadow: 0 0 10px #6ab8ff70;
+    }
+
+    /* My Fav Characters */
+    #characters {
+      margin-top: 2rem;
+    }
+
+    .chars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 1rem;
+    }
+
+    .char-card {
+      background: #0f0f1a;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #6ab8ff;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .char-cover {
+      width: 100%;
+      aspect-ratio: 1 / 1; /* square */
+      overflow: hidden;
+      border-radius: 8px;
+      background: #071022;
+      display: block;
+    }
+
+    .char-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .char-meta {
+      color: #dbefff;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      .chars-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+    <header>
+        <img src="yaa.jpg" alt="Avatar" class="avatar">
+        <div class="header-text">
+          <h1>Mayoi Ebihara</h1>
+          <p>She/Her • Filipino </p>
+          <p>Digi-Artist • Coder • Poet</p>
+
+          <!-- moved welcome content into header -->
+          <div class="welcome-title">
+            <div class="quote" style="margin-top:8px;">“fuck cardd.co, im taking this to the next level w 0.000001% of my coding skills LMAO”</div>
+          </div>
+        </div>
+      </header>
+
+  <section id="about">
+    <h2>ABOUT ME</h2>
+
+    <div class="about-inner">
+      <div class="about-text">
+        <p>howdy! im Ebihara, Ebi for short. im introverted, soft-spoken and usually the person with back problems LOL</p>
+        <p>i dont have some big story to tell. im just a quiet person trying to get through life and understand myself a little better. most days, i dont really know what im doing, im just figuring things out one step at a time.</p>
+        <p>I love to draw, especially digital art. thats where I speak the loudest, where I feel the most like myself. same with poetry.</p>
+        <p>im a multifandom mess too, but im mostly attached to Blue Archive, Forsaken, Uma, BSD (bungo stray dogs) and like 50 other things depending on wtv my brain hyperfixes on at 3am, but those are the main ones I keep crawling back to.</p>
+        <p>i dont talk much at first, but if you actually get to know me? expect absolute chaos. like, full-speed unhinged. thats just the natural progression lmao</p>
+      </div>
+
+      <!-- replace "about.jpg" with the image filename you have (e.g. family1.jpg) -->
+      <img src="shiroko.gif" alt="About picture" class="about-box">
+    </div>
+  </section> <!-- end ABOUT -->
+
+  <!-- My Fav Characters (place below ABOUT) -->
+  <section id="characters">
+    <h2>MY FAV CHARACTERS</h2>
+    <p> they're goated yes </p>
+
+    <div class="chars-grid">
+      <div class="char-card">
+        <div class="char-cover">
+          <img src="rabu.png" alt="Character 1 (replace image)">
+        </div>
+        <div class="char-meta">
+          <div class="char-name">Komakaze Rabu</div>
+          <div class="char-desc">Blue Archive</div>
+        </div>
+      </div>
+
+      <div class="char-card">
+        <div class="char-cover">
+          <img src="artful.jpg" alt="Character 2 (replace image)">
+        </div>
+        <div class="char-meta">
+          <div class="char-name">Artful</div>
+          <div class="char-desc">Die of Death (ROBLOX)</div>
+        </div>
+      </div>
+
+      <div class="char-card">
+        <div class="char-cover">
+          <img src="Nashatra B_.jpg" alt="Character 3 (replace image)">
+        </div>
+        <div class="char-meta">
+          <div class="char-name">Nashatra Bealdhild</div>
+          <div class="char-desc">Frozen Soul (AKA Dream Game ROBLOX) </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2>ALL TIME FAVORITE SONGS</h2>
+    <p>a very subjective list of my 4 all-time favorite songs</p>
+
+    <div class="gallery-grid">
+      <!-- audio-item: replace data-track value with your spotify track URL (open.spotify.com/track/....) -->
+      <div class="gallery-item audio-item" data-track="https://open.spotify.com/track/0vieqs2SQYZWIR9olTDYes?si=6c0c0330674b496a">
+        <div class="audio-cover" aria-hidden="false">
+          <img src="machinelove.jpg" alt="Machine Love cover">
+          <button class="play-btn" aria-label="Play Machine Love">▶</button>
+        </div>
+        <div class="audio-meta">
+          <div class="title">Machine Love</div>
+          <div class="artist">Jamie P</div>
+        </div>
+        <div class="audio-player" aria-live="polite"></div>
+      </div>
+
+      <div class="gallery-item audio-item" data-track="https://open.spotify.com/track/6tPFZRJKj5JR7qO3qWxaVm?si=b488f01987e840e3">
+        <div class="audio-cover">
+          <img src="saksi.jpg" alt="Saksi ang Langit cover">
+          <button class="play-btn" aria-label="Play BIRDBRAIN">▶</button>
+        </div>
+        <div class="audio-meta">
+          <div class="title">Saksi ang Langit</div>
+          <div class="artist">December Avenue</div>
+        </div>
+        <div class="audio-player"></div>
+      </div>
+
+        <div class="gallery-item audio-item" data-track="https://open.spotify.com/track/2asWe7CTLmXiGRaWqHZ1rk?si=1eb6e3bb0f5c4d23">
+        <div class="audio-cover">
+          <img src="weather.png" alt="weathergirl cover">
+          <button class="play-btn" aria-label="Play BIRDBRAIN">▶</button>
+        </div>
+        <div class="audio-meta">
+          <div class="title">weathergirl</div>
+          <div class="artist">FLAVOR FOLEY</div>
+        </div>
+        <div class="audio-player"></div>
+      </div>  
+
+        <div class="gallery-item audio-item" data-track="https://open.spotify.com/track/7yBjQ29XKxHlxuqycHuvmm?si=d3325e35f2554a5a">
+        <div class="audio-cover">
+          <img src="wet.jpg" alt="Wet cover">
+          <button class="play-btn" aria-label="Play Wet">▶</button>
+        </div>
+        <div class="audio-meta">
+          <div class="title">Wet</div>
+          <div class="artist">Dazey and the Scouts</div>
+        </div>
+        <div class="audio-player"></div>
+      </div>
+
+      <!-- add more .audio-item blocks for other tracks; use same structure -->
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>SOCIALS</h2>
+    <a class="btn" href="mailto:pl632874@gmail.com" target="_blank">✉ EMAIL</a><br>
+    <a class="btn" href="https://www.youtube.com/@ebihara" target="_blank">▶ YOUTUBE</a><br>
+    <a class="btn" href="https://www.instagram.com/ebiharaa_" target="_blank">★ INSTAGRAM</a>
+    <a class="btn" href="https://www.roblox.com/users/1453786321/profile" target="_blank">✦ ROBLOX</a><br>
+  </section>
+
+
+  <script>
+    // lightweight player loader: toggles spotify embed iframe on click.
+    (function(){
+      function toEmbed(url){
+        // accept full spotify URL or a track ID
+        if(!url) return '';
+        if(url.includes('open.spotify.com')) return url.replace('/track/','/embed/track/');
+        return 'https://open.spotify.com/embed/track/' + url;
+      }
+
+      document.querySelectorAll('.audio-item').forEach(function(card){
+        var btn = card.querySelector('.play-btn');
+        var playerWrap = card.querySelector('.audio-player');
+        var cover = card.querySelector('.audio-cover img');
+        var trackUrl = card.getAttribute('data-track');
+
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          // if player already present -> remove (stop)
+          var existing = playerWrap.querySelector('iframe');
+          if(existing){
+            playerWrap.innerHTML = '';
+            btn.textContent = '▶';
+            return;
+          }
+          // create iframe embed
+          var embedSrc = toEmbed(trackUrl);
+          if(!embedSrc || embedSrc.indexOf('/embed/track/') === -1){
+            // invalid/missing track — show quick alert and exit
+            alert('Please add a valid Spotify track URL to data-track on this card.');
+            return;
+          }
+          var ifr = document.createElement('iframe');
+          ifr.src = embedSrc;
+          ifr.allow = 'encrypted-media; autoplay';
+          ifr.loading = 'lazy';
+          ifr.setAttribute('allowtransparency','true');
+          playerWrap.innerHTML = '';
+          playerWrap.appendChild(ifr);
+          btn.textContent = '■';
+        });
+        // optional: clicking cover also toggles
+        card.querySelector('.audio-cover').addEventListener('click', function(){ btn.click(); });
+      });
+    })();
+  </script>
+
+</body>
+</html>
